@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEXUS — Tic-Tac-Toe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Animated mesh background -->
+  <div class="bg-mesh" aria-hidden="true">
+    <div class="mesh-orb mesh-orb--1"></div>
+    <div class="mesh-orb mesh-orb--2"></div>
+    <div class="mesh-orb mesh-orb--3"></div>
+    <div class="mesh-orb mesh-orb--4"></div>
+    <div class="grid-lines" aria-hidden="true"></div>
+  </div>
+
+  <div class="app-shell">
+
+    <!-- ── Header ── -->
+    <header class="site-header">
+      <div class="brand">
+        <span class="brand-mark">✦</span>
+        <span class="brand-name">NEXUS</span>
+      </div>
+
+      <div class="header-actions">
+        <!-- Sound toggle -->
+        <button class="pill-btn" id="soundBtn" aria-label="Toggle sound" title="Toggle sound">
+          <svg id="soundSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+          </svg>
+          <span>Sound</span>
+        </button>
+
+        <!-- Theme toggle -->
+        <button class="pill-btn" id="themeBtn" aria-label="Toggle theme" title="Toggle theme">
+          <svg id="themeSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <span>Theme</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="main-content">
+
+      <!-- ── Mode selector ── -->
+      <section class="mode-selector" id="modeSelector" aria-label="Game mode">
+        <h1 class="page-title">TIC<span class="title-accent">·</span>TAC<span class="title-accent">·</span>TOE</h1>
+        <p class="page-sub">Choose your battle</p>
+
+        <div class="mode-cards">
+          <button class="mode-card" id="pvpBtn" aria-label="Player vs Player mode">
+            <div class="mode-card-icon">
+              <span class="symbol-x">X</span>
+              <span class="vs-text">VS</span>
+              <span class="symbol-o">O</span>
+            </div>
+            <div class="mode-card-body">
+              <span class="mode-card-title">PVP</span>
+              <span class="mode-card-sub">Player vs Player</span>
+            </div>
+          </button>
+
+          <button class="mode-card" id="pvaiBtn" aria-label="Player vs AI mode">
+            <div class="mode-card-icon">
+              <span class="symbol-x">X</span>
+              <span class="vs-text">VS</span>
+              <span class="ai-icon">⬡</span>
+            </div>
+            <div class="mode-card-body">
+              <span class="mode-card-title">PVE</span>
+              <span class="mode-card-sub">Player vs AI</span>
+            </div>
+          </button>
+        </div>
+      </section>
+
+      <!-- ── Game arena ── -->
+      <section class="game-arena" id="gameArena" hidden aria-label="Game board">
+
+        <!-- Turn / status bar -->
+        <div class="status-bar">
+          <div class="player-pill player-pill--x" id="pillX" aria-label="Player X">
+            <span class="pp-symbol">X</span>
+            <span class="pp-name" id="nameX">Player 1</span>
+          </div>
+
+          <div class="status-center">
+            <div class="turn-indicator" id="turnIndicator" aria-live="polite">
+              <span class="turn-dot" id="turnDot"></span>
+              <span class="turn-label" id="turnLabel">X's Turn</span>
+            </div>
+          </div>
+
+          <div class="player-pill player-pill--o" id="pillO" aria-label="Player O">
+            <span class="pp-name" id="nameO">Player 2</span>
+            <span class="pp-symbol">O</span>
+          </div>
+        </div>
+
+        <!-- Scoreboard -->
+        <div class="scoreboard">
+          <div class="score-block">
+            <span class="score-label">X</span>
+            <span class="score-value" id="scoreX">0</span>
+          </div>
+          <div class="score-block score-block--draw">
+            <span class="score-label">Draws</span>
+            <span class="score-value" id="scoreDraw">0</span>
+          </div>
+          <div class="score-block">
+            <span class="score-label">O</span>
+            <span class="score-value" id="scoreO">0</span>
+          </div>
+        </div>
+
+        <!-- Game board -->
+        <div class="board-wrapper" id="boardWrapper">
+          <!-- SVG win-line overlay -->
+          <svg class="win-line-svg" id="winLineSvg" viewBox="0 0 300 300" aria-hidden="true">
+            <line id="winLine" x1="0" y1="0" x2="0" y2="0"
+                  stroke="url(#lineGrad)" stroke-width="6"
+                  stroke-linecap="round" class="win-line"/>
+            <defs>
+              <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="var(--accent-x)"/>
+                <stop offset="100%" stop-color="var(--accent-x-soft)"/>
+              </linearGradient>
+            </defs>
+          </svg>
+
+          <div class="board" id="board" role="grid" aria-label="Tic-Tac-Toe board">
+            <!-- 9 cells injected by JS -->
+          </div>
+        </div>
+
+        <!-- Action row -->
+        <div class="action-row">
+          <button class="action-btn action-btn--reset" id="resetBtn" aria-label="Restart game">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 .49-4.5"></path></svg>
+            Restart
+          </button>
+          <button class="action-btn action-btn--menu" id="menuBtn" aria-label="Back to menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            Menu
+          </button>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ── Result Modal ── -->
+  <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
+    <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-glow" aria-hidden="true"></div>
+      <div class="modal-symbol" id="modalSymbol" aria-hidden="true"></div>
+      <div class="modal-confetti" id="modalConfetti" aria-hidden="true">
+        <!-- Confetti particles injected by JS -->
+      </div>
+      <h2 class="modal-title" id="modalTitle">Game Over</h2>
+      <p class="modal-sub" id="modalSub"></p>
+      <div class="modal-actions">
+        <button class="modal-btn modal-btn--primary" id="playAgainBtn">Play Again</button>
+        <button class="modal-btn modal-btn--secondary" id="menuBtn2">Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
